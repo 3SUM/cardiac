@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import discord
 from discord.ext import commands
@@ -31,17 +32,25 @@ class Cardiac:
         if message.author == bot.user:
             return
 
+        content = message.content
+        for word in Cardiac.filter:
+            if Cardiac.find_word(word)(content):
+                await message.channel.send("BANNED")
+                break
         await bot.process_commands(message)
 
     @bot.event
     async def on_ready():
         print(f"Logged in as {bot.user.name}")
-        with open("list.json") as f:
-            words = json.load(f)
-            Cardiac.filter = words["wordList"]
-            print(Cardiac.filter)
+        print(Cardiac.filter)
+
+    def find_word(w):
+        return re.compile(r"\b({0})\b".format(w), flags=re.IGNORECASE).search
 
     def main():
+        with open("list.json") as f:
+            data = json.load(f)
+            Cardiac.filter = data["wordList"]
         bot.run(TOKEN)
 
 
