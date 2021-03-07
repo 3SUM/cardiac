@@ -16,6 +16,10 @@ class Cardiac:
         print(f"{bot.user.name} joined {guild.name}")
 
     @bot.event
+    async def on_member_join(member):
+        print(f"{member.name} has joined!")
+
+    @bot.event
     async def on_member_remove(member):
         print(f"{member.name} has left!")
 
