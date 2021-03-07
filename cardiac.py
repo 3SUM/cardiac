@@ -38,7 +38,8 @@ class Cardiac:
         print(f"Logged in as {bot.user.name}")
         with open("list.json") as f:
             words = json.load(f)
-            print(words)
+            Cardiac.filter = words["wordList"]
+            print(Cardiac.filter)
 
     def main():
         bot.run(TOKEN)
