@@ -40,7 +40,7 @@ class Cardiac:
                 await message.delete()
                 await guild.ban(member, reason="Used profanity")
                 banned_embed = discord.Embed(
-                    title="Banned user",
+                    title="Banned User",
                     description=f"{member.name} has been banned!",
                     color=0xE73C24,
                 )
