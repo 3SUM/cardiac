@@ -38,7 +38,12 @@ class Cardiac:
         for word in Cardiac.filter:
             if Cardiac.find_word(word)(content):
                 await message.delete()
-                await message.channel.send(f"{member.name} has been banned!")
+                banned_embed = discord.Embed(
+                    title="Banned user",
+                    description=f"{member.name} has been banned!",
+                    color=0xE73C24,
+                )
+                await message.channel.send(embed=banned_embed)
                 break
         await bot.process_commands(message)
 
