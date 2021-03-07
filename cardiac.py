@@ -32,17 +32,19 @@ class Cardiac:
         if message.author == bot.user:
             return
 
+        guild = message.guild
+        member = message.author
         content = message.content
         for word in Cardiac.filter:
             if Cardiac.find_word(word)(content):
-                await message.channel.send("BANNED")
+                await message.delete()
+                await message.channel.send(f"{member.name} has been banned!")
                 break
         await bot.process_commands(message)
 
     @bot.event
     async def on_ready():
         print(f"Logged in as {bot.user.name}")
-        print(Cardiac.filter)
 
     def find_word(w):
         return re.compile(r"\b({0})\b".format(w), flags=re.IGNORECASE).search
