@@ -38,6 +38,7 @@ class Cardiac:
         for word in Cardiac.filter:
             if Cardiac.find_word(word)(content):
                 await message.delete()
+                await guild.ban(member, reason="Used profanity")
                 banned_embed = discord.Embed(
                     title="Banned user",
                     description=f"{member.name} has been banned!",
