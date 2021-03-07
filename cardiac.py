@@ -1,4 +1,5 @@
 import os
+import json
 import discord
 from discord.ext import commands
 
@@ -7,9 +8,12 @@ TOKEN = os.environ["TOKEN"]
 
 intents = discord.Intents.default()
 intents.members = True
-bot = commands.Bot(command_prefix="$", intents=intents)
+bot = commands.Bot(command_prefix="+", intents=intents)
+
 
 class Cardiac:
+    filter = None
+
     @bot.event
     async def on_guild_join(guild):
         print(f"{bot.user.name} joined {guild.name}")
@@ -32,6 +36,9 @@ class Cardiac:
     @bot.event
     async def on_ready():
         print(f"Logged in as {bot.user.name}")
+        with open("list.json") as f:
+            words = json.load(f)
+            print(words)
 
     def main():
         bot.run(TOKEN)
