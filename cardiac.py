@@ -65,8 +65,8 @@ class Cardiac:
         return np.apply_along_axis(Cardiac.get_profane_prob, 1, Cardiac.model.predict_proba(Cardiac.vectorizer.transform(message)))
 
     def main():
-        Cardiac.model = joblib.load("model.joblib")
-        Cardiac.vectorizer = joblib.load("vectorizer.joblib")
+        Cardiac.model = joblib.load("data/model.joblib")
+        Cardiac.vectorizer = joblib.load("data/vectorizer.joblib")
         bot.run(TOKEN)
 
 

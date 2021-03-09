@@ -1,8 +1,8 @@
 import numpy as np
 import joblib
 
-vectorizer = joblib.load("vectorizer.joblib")
-model = joblib.load("model.joblib")
+vectorizer = joblib.load("data/vectorizer.joblib")
+model = joblib.load("data/model.joblib")
 
 
 def _get_profane_prob(prob):
