@@ -37,18 +37,23 @@ class Cardiac:
 
         guild = message.guild
         member = message.author
-        text = message.content
-        texts = [text]
-        print(texts)
-        print(Cardiac.predict_prob(texts))
+        text = [message.content]
+        prob = Cardiac.predict_prob(text)
+        print(f"{message.content} [{prob}]")
+        if prob >= 0.70:
+            await message.delete()
+            await guild.ban(member, reason="Used profanity")
+            banned_embed = discord.Embed(
+                title="Banned User",
+                description=f"{member.name} has been banned!",
+                color=0xE73C24,
+            )
+            await message.channel.send(embed=banned_embed)
         await bot.process_commands(message)
 
     @bot.event
     async def on_ready():
         print(f"Logged in as {bot.user.name}")
-
-    def find_word(w):
-        return re.compile(r"\b({0})\b".format(w), flags=re.IGNORECASE).search
 
     def get_profane_prob(prob):
         return prob[1]
