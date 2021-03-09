@@ -2,6 +2,8 @@ import os
 import re
 import json
 import discord
+import joblib
+import numpy as np
 from discord.ext import commands
 
 
@@ -13,7 +15,8 @@ bot = commands.Bot(command_prefix="+", intents=intents)
 
 
 class Cardiac:
-    filter = None
+    model = None
+    vectorizer = None
 
     @bot.event
     async def on_guild_join(guild):
@@ -34,18 +37,8 @@ class Cardiac:
 
         guild = message.guild
         member = message.author
-        content = message.content
-        for word in Cardiac.filter:
-            if Cardiac.find_word(word)(content):
-                await message.delete()
-                await guild.ban(member, reason="Used profanity")
-                banned_embed = discord.Embed(
-                    title="Banned User",
-                    description=f"{member.name} has been banned!",
-                    color=0xE73C24,
-                )
-                await message.channel.send(embed=banned_embed)
-                break
+        text = message.content
+        print(Cardiac.predict(text))
         await bot.process_commands(message)
 
     @bot.event
@@ -55,10 +48,18 @@ class Cardiac:
     def find_word(w):
         return re.compile(r"\b({0})\b".format(w), flags=re.IGNORECASE).search
 
+    def get_profane_prob(prob):
+        return prob[1]
+
+    def predict(message):
+        return Cardiac.model.predict(Cardiac.vectorizer.transform(message))
+
+    def predict_prob(message):
+        return np.apply_along_axis(get_profane_prob, 1, Cardiac.model.predict_proba(Cardiac.vectorizer.transform(message)))
+
     def main():
-        with open("list.json") as f:
-            data = json.load(f)
-            Cardiac.filter = data["wordList"]
+        Cardiac.model = joblib.load("model.joblib")
+        Cardiac.vectorizer = joblib.load("vectorizer.joblib")
         bot.run(TOKEN)
 
 
