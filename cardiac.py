@@ -40,7 +40,7 @@ class Cardiac:
         text = message.content
         texts = [text]
         print(texts)
-        print(Cardiac.predict(texts))
+        print(Cardiac.predict_prob(texts))
         await bot.process_commands(message)
 
     @bot.event
