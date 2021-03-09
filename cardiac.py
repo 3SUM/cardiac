@@ -38,8 +38,9 @@ class Cardiac:
         guild = message.guild
         member = message.author
         text = message.content
-        text = [text]
-        print(Cardiac.predict(text))
+        texts = [text]
+        print(texts)
+        print(Cardiac.predict(texts))
         await bot.process_commands(message)
 
     @bot.event
