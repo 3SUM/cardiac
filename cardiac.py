@@ -16,27 +16,27 @@ class Cardiac:
     filter = None
 
     @bot.event
-    async def on_guild_join(guild):
+    async def on_guild_join(self, guild):
         print(f"{bot.user.name} joined {guild.name}")
 
     @bot.event
-    async def on_member_join(member):
+    async def on_member_join(self, member):
         print(f"{member.name} has joined!")
 
     @bot.event
-    async def on_member_remove(member):
+    async def on_member_remove(self, member):
         print(f"{member.name} has left!")
 
     @bot.event
-    async def on_message(message):
+    async def on_message(self, message):
         if message.author == bot.user:
             return
 
         guild = message.guild
         member = message.author
         content = message.content
-        for word in Cardiac.filter:
-            if Cardiac.find_word(word)(content):
+        for word in self.filter:
+            if self.find_word(word)(content):
                 await message.delete()
                 await guild.ban(member, reason="Used profanity")
                 banned_embed = discord.Embed(
@@ -49,18 +49,19 @@ class Cardiac:
         await bot.process_commands(message)
 
     @bot.event
-    async def on_ready():
+    async def on_ready(self):
         print(f"Logged in as {bot.user.name}")
 
-    def find_word(w):
+    def find_word(self, w):
         return re.compile(r"\b({0})\b".format(w), flags=re.IGNORECASE).search
 
-    def main():
+    def main(self):
         with open("list.json") as f:
             data = json.load(f)
-            Cardiac.filter = data["wordList"]
+            self.filter = data["wordList"]
         bot.run(TOKEN)
 
 
 if __name__ == "__main__":
-    Cardiac.main()
+    cardiac = Cardiac()
+    cardiac.main()
