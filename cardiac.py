@@ -58,7 +58,7 @@ class Cardiac:
                 warned_embed = discord.Embed(
                     title="Warned User",
                     description=f"{member.mention} has been warned!",
-                    color=0xE73C24,
+                    color=0xFF8C00,
                 )
                 await message.channel.send(embed=warned_embed)
         await bot.process_commands(message)
