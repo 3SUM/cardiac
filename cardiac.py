@@ -39,8 +39,8 @@ class Cardiac:
         member = message.author
         text = [message.content]
         prob = Cardiac.predict_prob(text)
-        print(f"{message.content} [{prob}]")
-        if prob >= 0.70:
+        if prob >= 0.80:
+            print(f"{message.content} [{prob}]")
             await message.delete()
             await guild.ban(member, reason="Used profanity")
             banned_embed = discord.Embed(
