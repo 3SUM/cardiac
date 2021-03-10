@@ -37,18 +37,30 @@ class Cardiac:
 
         guild = message.guild
         member = message.author
+        warned_role = discord.utils.get(guild.roles, name="Warned")
+
         text = [message.content]
         prob = Cardiac.predict_prob(text)
         if prob >= 0.80:
             print(f"{message.content} [{prob}]")
-            await message.delete()
-            await guild.ban(member, reason="Used profanity")
-            banned_embed = discord.Embed(
-                title="Banned User",
-                description=f"{member.name} has been banned!",
-                color=0xE73C24,
-            )
-            await message.channel.send(embed=banned_embed)
+            if warned_role in member.roles:
+                await message.delete()
+                await guild.ban(member, reason="Used profanity")
+                banned_embed = discord.Embed(
+                    title="Banned User",
+                    description=f"{member.name} has been banned!",
+                    color=0xE73C24,
+                )
+                await message.channel.send(embed=banned_embed)
+            else:
+                await message.delete()
+                await discord.Member.add_roles(member, warned_role)
+                warned_embed = discord.Embed(
+                    title="Warned User",
+                    description=f"{member.mention} has been warned!",
+                    color=0xE73C24,
+                )
+                await message.channel.send(embed=warned_embed)
         await bot.process_commands(message)
 
     @bot.event
