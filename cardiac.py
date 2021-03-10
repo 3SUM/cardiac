@@ -49,7 +49,7 @@ class Cardiac:
                 banned_embed = discord.Embed(
                     title="Banned User",
                     description=f"{member.name} has been banned!",
-                    color=0xE73C24,
+                    color=0xD0021B,
                 )
                 await message.channel.send(embed=banned_embed)
             else:
